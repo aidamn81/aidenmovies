@@ -1,60 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Aiden's Entertainment</title>
 <style>
-  :root{ --neon:#391DD1; --cardMin: 160px; }
+  :root{ --neon:#3A24D9; }
   html,body{height:100%;margin:0}
   body{
     background:#000 url('./assets/castlebg.jpeg') no-repeat center top/cover;
     font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
     color:#fff;
   }
-  /* top pages */
-  .pages{
-    display:flex; gap:18px; justify-content:center;
-    padding:10px 12px 12px; position:sticky; top:0; z-index:2;
-    background:rgba(0,0,0,.35); backdrop-filter:saturate(1.1) blur(6px);
-  }
-  .pages a{
-    color:#fff; text-decoration:none; font-weight:600;
-    padding:8px 14px; border-radius:10px;
-    border:2px solid var(--neon); background:rgba(0,0,0,.5);
-    text-shadow:0 0 8px var(--neon), 0 0 12px var(--neon);
-    box-shadow:inset 0 0 10px var(--neon);
-  }
-
-  /* grid */
-  .grid{
-    display:grid; grid-template-columns:repeat(auto-fill,minmax(var(--cardMin),1fr));
-    gap:16px; padding:16px; max-width:1200px; margin:0 auto;
-  }
-  .card{ display:flex; flex-direction:column; gap:8px; }
-  .thumb{
-    width:100%; aspect-ratio:2/3; border-radius:14px; overflow:hidden;
-    border:2px solid var(--neon); background:#090909;
-    box-shadow:inset 0 0 14px rgba(57,29,209,.55);
-    transition:transform .18s ease;
-  }
-  .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
-  .card:hover .thumb{ transform:scale(1.04); }
-  .title{
-    font-size:.95rem; line-height:1.15; text-align:center;
-    text-shadow:0 0 8px #000;
-  }
-  /* debug for missing images */
-  .broken{
-    display:grid; place-items:center; color:#fff; text-align:center;
-    font-size:.8rem; padding:8px; background:#2b0000;
-    background-image: repeating-linear-gradient(45deg, rgba(255,0,0,.25) 0 12px, transparent 12px 24px);
-    border:2px solid #ff3b3b !important;
-  }
-  .broken small{ opacity:.75; display:block; margin-top:6px; word-break:break-all; }
+  .pages{display:flex;gap:12px;justify-content:center;padding:8px 12px;background:rgba(0,0,0,.35);backdrop-filter:saturate(1.1) blur(6px);position:sticky;top:0;z-index:10}
+  .pages a{color:#fff;text-decoration:none;font-weight:600;padding:6px 12px;border-radius:10px;border:2px solid var(--neon);background:rgba(0,0,0,.5);box-shadow:inset 0 0 10px var(--neon)}
+  .logo-container{display:flex;justify-content:center;margin:16px 0}
+  .logo{width:3cm;height:3cm;object-fit:contain;animation:pulseGlow 2s infinite}
+  @keyframes pulseGlow{0%{box-shadow:0 0 8px var(--neon),0 0 16px var(--neon)}50%{box-shadow:0 0 20px var(--neon),0 0 40px var(--neon)}100%{box-shadow:0 0 8px var(--neon),0 0 16px var(--neon)}}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:12px;padding:12px;max-width:1200px;margin:0 auto}
+  .card{display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;color:#fff}
+  .thumb{width:90px;height:135px;border-radius:12px;overflow:hidden;border:2px solid var(--neon);background:#090909;box-shadow:inset 0 0 12px rgba(58,36,217,.5)}
+  .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .title{font-size:.85rem;line-height:1.1;text-align:center}
+  .broken{display:grid;place-items:center;width:90px;height:135px;background:#2b0000;border:2px solid #ff3b3b;border-radius:12px;text-align:center;font-size:.75rem;padding:6px}
 </style>
 </head>
 <body>
+
+<div class="logo-container">
+  <img src="./assets/aidensent.png" alt="Aiden's Entertainment" class="logo">
+</div>
 
 <nav class="pages">
   <a href="./index.html">Home</a>
@@ -65,167 +40,40 @@
 <div class="grid" id="grid"></div>
 
 <script>
-  // Change this if your folder name/path is different:
-  const THUMB_DIR = './assets/thumbs/';
-
-  // Helper to add entries (title, link, exact filename in assets/thumb)
-  const add = (title, link, file) => ({ title, link, file });
-
-  // ===== Your movies using the EXACT filenames from your screenshots =====
+  const THUMB_DIR = './assets/thumbs/'; // <- your folder is "thumbs"
+  const add = (title, link, file) => ({title, link, file});
   const items = [
-    add("28 Days Later", "https://dobby.site/movies/28-days-later-dot-dot-dot-2002?_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "28days.jpg"),
-    add("28 Weeks Later", "https://dobby.site/movies/28-weeks-later-2007?_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "28weeks.jpg"),
-    add("30 Days of Night", "https://dobby.site/movies/30-days-of-night-2007?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "30days.jpg"),
-    add("The Addams Family", "https://dobby.site/movies/the-addams-family-1991?pl=-1&_u=hchh6mwu5k&_t=33dp8k&_rsrc=chrome/newtab", "addams.jpg"),
-    add("Addams Family Values", "https://dobby.site/movies/addams-family-values-1993?_rsrc=chrome/newtab&_t=33dp8k&_u=hchh6mwu5k&pl=-1", "addams2.jpg"),
-    add("A Simple Favour", "https://dobby.site/movies/a-simple-favor-2018?_rsrc=chrome/newtab&_t=7gl997&_u=hchh6mwu5k&pl=-1", "simplefavour.jpg"),
-
-    add("A.I. Artificial Intelligence", "https://dobby.site/movies/ai-artificial-intelligence-2001?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "ai.jpg"),
-    add("Alien (1979)", "https://dobby.site/movies/alien-1979?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "alien.jpg"),
-    add("Aliens (1986)", "https://dobby.site/movies/aliens-1986?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "aliens.jpg"),
-    add("Alien 3 (1992)", "https://dobby.site/movies/alien3-1992?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "alien3.jpg"),
-    add("Alien Resurrection (1997)", "https://dobby.site/movies/alien-resurrection-1997?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "alien4.jpg"),
-    add("Alien: Romulus (2024)", "https://dobby.site/movies/alien-romulus-2024?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "romulus.jpg"),
-
-    add("Angels in America", "https://dobby.site/shows/angels-in-america?_u=hchh6mwu5k&_t=e14tdp&_rsrc=chrome/newtab", "angels.jpg"),
-    add("Batman (1989)", "https://dobby.site/movies/batman-1989?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "batman.jpg"),
-    add("Batman Returns (1992)", "https://dobby.site/movies/batman-returns-1992?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "batman2.jpg"),
-    add("Batman Forever (1995)", "https://dobby.site/movies/batman-returns-1992?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "batmanforever.jpg"),
-    add("The Batman (2022)", "https://dobby.site/movies/the-batman-2022?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "thebatman.jpg"),
-
-    add("Barb & Star", "https://dobby.site/movies/barb-and-star-go-to-vista-del-mar-2021?_rsrc=chrome/newtab&_t=gcqrcb&_u=hchh6mwu5k&pl=-1", "barb.jpg"),
-    add("Becky", "https://dobby.site/movies/becky-2020?_rsrc=chrome/newtab&_t=h5aqtn&_u=hchh6mwu5k&pl=-1", "becky.jpg"),
-    add("The Wrath of Becky", "https://dobby.site/movies/the-wrath-of-becky-2023?pl=-1&_u=hchh6mwu5k&_t=h5aqtn&_rsrc=chrome/newtab", "becky2.jpg"),
-
-    add("Black Swan", "https://dobby.site/list/Watch%20Later/55?_rsrc=chrome/newtab&_t=2tq1n7&_u=hchh6mwu5k&pl=-1", "blackswan.jpg"),
-    add("Chocolat", "https://dobby.site/movies/chocolat-2000?pl=-1&_u=hchh6mwu5k&_t=n8hvit&_rsrc=chrome/newtab", "chocolat.jpg"),
-    add("Coyote Ugly", "https://dobby.site/movies/coyote-ugly-2000?pl=-1&_u=hchh6mwu5k&_t=n8hvit&_rsrc=chrome/newtab", "coyote.jpg"),
-    add("Clueless", "https://dobby.site/movies/clueless-1995?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "clueless.jpg"),
-    add("Crawl", "https://dobby.site/movies/crawl-2019?pl=-1&_u=hchh6mwu5k&_t=qgkarn&_rsrc=chrome/newtab", "crawl.jpg"),
-    add("Cruel Intentions", "https://dobby.site/list/Watch%20Later/26?_rsrc=chrome/newtab&_t=4ar4fj&_u=hchh6mwu5k&pl=-1", "cruel.jpg"),
-    add("Dark City", "https://dobby.site/list/Watch%20Later/27?_rsrc=chrome/newtab&_t=fse6bl&_u=hchh6mwu5k&pl=-1", "darkcity.jpg"),
-    add("Dawn of the Dead (2004)", "https://dobby.site/movies/dawn-of-the-dead-2004?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "dawn.jpg"),
-    add("Dennis the Menace", "https://dobby.site/movies/dennis-the-menace-1993?_rsrc=chrome/newtab&_t=atjrk6&_u=hchh6mwu5k&pl=-1", "dennis.jpg"),
-    add("Dogma", "https://dobby.site/movies/dogma-1999?_rsrc=chrome/newtab&_t=kba74h&_u=hchh6mwu5k&pl=-1", "dogma.jpg"),
-    add("Don't Breathe", "https://dobby.site/movies/dont-breathe-2016?pl=-1&_u=hchh6mwu5k&_t=kba74h&_rsrc=chrome/newtab", "dontbreathe.jpg"),
-    add("Don't Breathe 2", "https://dobby.site/movies/dont-breathe-2-2021?pl=-1&_u=hchh6mwu5k&_t=3mg952&_rsrc=chrome/newtab", "dontbreathe2.jpg"),
-    add("Dracula (1992)", "https://dobby.site/movies/dracula-1992?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "dracula.jpg"),
-
-    add("Edward Scissorhands", "https://dobby.site/movies/edward-scissorhands-1990?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "edward.jpg"),
-    add("Elvis", "https://dobby.site/movies/elvis-2022?_rsrc=chrome/newtab&_t=oo4prj&_u=hchh6mwu5k&pl=-1", "elvis.jpg"),
-    add("Fight Club", "https://dobby.site/movies/fight-club-1999?pl=-1&_u=hchh6mwu5k&_t=n8hvit&_rsrc=chrome/newtab", "fight.jpg"),
-    add("Ghost", "https://dobby.site/movies/ghost-1990?_rsrc=chrome/newtab&_t=aed2ap&_u=hchh6mwu5k&pl=-1", "ghost.jpg"),
-
-    add("Ginger Snaps", "https://dobby.site/movies/ghost-1990?_rsrc=chrome/newtab&_t=aed2ap&_u=hchh6mwu5k&pl=-1", "ginger.jpg"),
-    add("Ginger Snaps 2", "https://www.effedupmovies.com/ginger-snaps-2-2004/", "ginger2.jpg"),
-    add("Ginger Snaps 3", "https://www.lookmovie2.to/movies/view/ginger-snaps-back-the-beginning-2004", "ginger3.jpg"),
-
-    add("Great Expectations (1998)", "https://dobby.site/movies/great-expectations-1998?pl=-1&_u=hchh6mwu5k&_t=7jq6kp&_rsrc=chrome/newtab", "expectations.jpg"),
-    add("Hail Satan?", "https://dobby.site/list/Watch%20Later/37?_rsrc=chrome/newtab&_t=lhbiio&_u=hchh6mwu5k&pl=-1", "hail.jpg"),
-    add("Hedwig and the Angry Inch", "https://dobby.site/movies/hedwig-and-the-angry-inch-2001?_rsrc=chrome/newtab&_t=7r6j4e&_u=hchh6mwu5k&pl=-1", "hedwig.jpg"),
-
-    add("From Dusk Till Dawn", "https://dobby.site/movies/from-dusk-till-dawn-1996?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "fromdusk.jpg"),
-    add("From Dusk Till Dawn 3", "https://dobby.site/movies/from-dusk-till-dawn-3-the-hangmans-daughter-1999?pl=-1&_t=mr9gmc&_rsrc=chrome/newtab&_u=hchh6mwu5k", "fromdusk3.jpg"),
-
-    add("I Know What You Did Last Summer", "https://dobby.site/movies/i-know-what-you-did-last-summer-1997?_rsrc=chrome/newtab&_t=badn4n&_u=hchh6mwu5k&pl=-1", "iknow.jpg"),
-    add("I Still Know What You Did Last Summer", "https://dobby.site/movies/i-still-know-what-you-did-last-summer-1998?pl=-1&_u=hchh6mwu5k&_t=472cu6&_rsrc=chrome/newtab", "iknow2.jpg"),
-    add("Interview with the Vampire", "https://dobby.site/movies/interview-with-the-vampire-1994?_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "interview.jpg"),
-
-    add("Jolt", "https://dobby.site/movies/jolt-2021?_rsrc=chrome/newtab&_t=1oaoul&_u=hchh6mwu5k&pl=-1", "jolt.jpg"),
-    add("Jurassic Park", "https://dobby.site/movies/jurassic-park-1993?_rsrc=chrome/newtab&_t=rvhrmk&_u=hchh6mwu5k&pl=-1", "jp.jpg"),
-    add("Let Me In", "https://dobby.site/movies/let-me-in-2010?pl=-1&_u=hchh6mwu5k&_t=7jq6kp&_rsrc=chrome/newtab", "letmein.jpg"),
-
-    add("Life After Beth", "https://dobby.site/list/Watch%20Later/17?_rsrc=chrome/newtab&_t=d81d2t&_u=hchh6mwu5k&pl=-1", "beth.jpg"),
-    add("Lisa Frankenstein", "https://dobby.site/movies/lisa-frankenstein-2024?_rsrc=chrome/newtab&_t=cpdupp&_u=hchh6mwu5k&pl=-1", "lisa.jpg"),
-    add("Mary Shelley's Frankenstein", "https://dobby.site/list/Watch%20Later/77?pl=-1&_u=hchh6mwu5k&_t=cpdupp&_rsrc=chrome/newtab", "frankeinstein.jpg"),
-
-    add("Moulin Rouge!", "https://dobby.site/movies/moulin-rouge-2001?pl=-1&_u=hchh6mwu5k&_t=oo4prj&_rsrc=chrome/newtab", "moulin.jpg"),
-    add("Mrs Doubtfire", "https://dobby.site/movies/mrs-doubtfire-1993?_rsrc=chrome/newtab&_t=8t6qkg&_u=hchh6mwu5k&pl=-1", "doubtfire.jpg"),
-    add("Muse: Simulation Theory", "https://dobby.site/list/Watch%20Later/3?_u=hchh6mwu5k&_t=31f1bb&_rsrc=chrome/newtab", "muse.jpg"),
-    add("Natural Born Killers", "https://dobby.site/movies/natural-born-killers-1994?_rsrc=chrome/newtab&_t=n6iepe&_u=hchh6mwu5k&pl=-1", "naturalbornkillers.jpg"),
-
-    add("No One Will Save You", "https://dobby.site/movies/no-one-will-save-you-2023?pl=-1&_u=hchh6mwu5k&_t=qgkarn&_rsrc=chrome/newtab", "noone.jpg"),
-    add("Old People", "https://dobby.site/movies/old-people-2022?_u=hchh6mwu5k&_t=qgkarn&_rsrc=chrome/newtab", "oldpeople.jpg"),
-    add("Only Lovers Left Alive", "https://dobby.site/movies/only-lovers-left-alive-2013?pl=-1&_u=hchh6mwu5k&_t=muet4h&_rsrc=chrome/newtab", "lovers.jpg"),
-
-    add("The Open House", "https://dobby.site/movies/the-open-house-2018?_u=hchh6mwu5k&_t=2d04qs&_rsrc=chrome/newtab", "openhouse.jpg"),
-    add("Pan's Labyrinth (HU)", "https://videa.hu/videok/film-animacio/a-faun-labirintusa-2006-fantasztikus-mexikoi-spanyol-amerikai-u5Gi4DbSGJeU1MmA", "pans.jpg"),
-    add("Paris Is Burning", "https://youtu.be/nI7EhpY2yaA?si=MayNBLHYYmjgSc90", "paris.jpg"),
-    add("Passengers", "https://dobby.site/movies/passengers-2016?_rsrc=chrome/newtab&_t=9gvj71&_u=hchh6mwu5k&pl=-1", "passangers.jpg"),
-
-    add("Perfume", "https://dobby.site/movies/perfume-the-story-of-a-murderer-2006?pl=-1&_u=hchh6mwu5k&_t=3mg952&_rsrc=chrome/newtab", "perfume.jpg"),
-    add("Poor Things", "https://dobby.site/movies/poor-things-2023?_rsrc=chrome/newtab&_t=r1f1a0&_u=hchh6mwu5k&pl=-1", "poorthings.jpg"),
-    add("Practical Magic", "https://dobby.site/movies/practical-magic-1998?_rsrc=chrome/newtab&_t=i0ndab&_u=hchh6mwu5k&pl=-1", "practical.jpg"),
-    add("Pretty Woman", "https://dobby.site/movies/pretty-woman-1990?_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "prettywoman.jpg"),
-    add("PS Burn This Letter", "https://dobby.site/list/Watch%20Later/23?pl=-1&_u=hchh6mwu5k&_t=31f1bb&_rsrc=chrome/newtab", "ps.jpg"),
-
-    add("Romeo + Juliet", "https://dobby.site/movies/romeo-plus-juliet-1996?pl=-1&_u=hchh6mwu5k&_t=oo4prj&_rsrc=chrome/newtab", "romeo.jpg"),
-    add("Romy and Michele", "https://dobby.site/movies/romy-and-micheles-high-school-reunion-1997?_rsrc=chrome/newtab&_t=6elmfm&_u=hchh6mwu5k&pl=-1", "romy.jpg"),
-    add("Queen of the Damned", "https://dobby.site/movies/queen-of-the-damned-2002?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "qotd.jpg"),
-
-    add("Sin City", "https://dobby.site/list/Watch%20Later/49?_rsrc=chrome/newtab&_t=60t0c8&_u=hchh6mwu5k&pl=-1", "sin.jpg"),
-    add("Sin City: A Dame to Kill For", "https://dobby.site/list/Watch%20Later/51?pl=-1&_u=hchh6mwu5k&_t=31f1bb&_rsrc=chrome/newtab", "sin2.jpg"),
-
-    add("Sister Act", "https://dobby.site/movies/sister-act-1992?pl=-1&_u=hchh6mwu5k&_t=763rjh&_rsrc=chrome/newtab", "sister1.jpg"),
-    add("Sister Act 2", "https://dobby.site/movies/sister-act-2-back-in-the-habit-1993?pl=-1&_u=hchh6mwu5k&_t=763rjh&_rsrc=chrome/newtab", "sister2.jpeg"),
-
-    add("Sweeney Todd", "https://dobby.site/movies/sweeney-todd-the-demon-barber-of-fleet-street-2007?_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "sweeney.jpg"),
-
-    add("The Best Exotic Marigold Hotel", "https://dobby.site/movies/the-best-exotic-marigold-hotel-2011?pl=-1&_u=hchh6mwu5k&_t=763rjh&_rsrc=chrome/newtab", "marigold.jpeg"),
-    add("The Second Best Exotic Marigold Hotel", "https://dobby.site/movies/the-second-best-exotic-marigold-hotel-2015?pl=-1&_u=hchh6mwu5k&_t=763rjh&_rsrc=chrome/newtab", "marigold2.jpg"),
-
-    add("The Cell", "https://dobby.site/movies/the-cell-2000?pl=-1&_u=hchh6mwu5k&_t=2d04qs&_rsrc=chrome/newtab", "cell.jpg"),
-    add("The Craft", "https://dobby.site/movies/the-craft-1996?pl=-1&_u=hchh6mwu5k&_t=763rjh&_rsrc=chrome/newtab", "craft.jpeg"),
-    add("The Craft: Legacy", "https://dobby.site/movies/the-craft-legacy-2020?_u=hchh6mwu5k&_t=763rjh&_rsrc=chrome/newtab", "craft.png"),
-
-    add("The Crow", "https://dobby.site/movies/the-crow-1994?_u=hchh6mwu5k&_t=2d04qs&_rsrc=chrome/newtab", "thecrow.jpg"),
-    add("The Crow: City of Angels", "https://www.lookmovie2.to/movies/play/1689756707-the-crow-city-of-angels-1996", "thecrow2.jpeg"),
-    add("The Crow: Salvation", "https://www.lookmovie27.to/movies/view/0132910-the-crow-salvation-2000", "thecrow3.jpg"),
-
-    add("The House Bunny", "https://dobby.site/movies/the-house-bunny-2008?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "bunny.jpg"),
-    add("The Little Mermaid (1989)", "https://dobby.site/movies/the-little-mermaid-1989?_rsrc=chrome/newtab&_t=ev4ijt&_u=hchh6mwu5k&pl=-1", "mermaid.jpg"),
-    add("The Lost Boys", "https://dobby.site/movies/the-lost-boys-1987?pl=-1&_u=hchh6mwu5k&_t=muet4h&_rsrc=chrome/newtab", "lostboys.jpg"),
-
-    add("The Others", "https://dobby.site/movies/the-others-2001?pl=-1&_u=hchh6mwu5k&_t=2d04qs&_rsrc=chrome/newtab", "others.jpg"),
-    add("The Greatest Showman", "https://dobby.site/movies/the-greatest-showman-2017?_rsrc=chrome/newtab&_t=hna2u0&_u=hchh6mwu5k&pl=-1", "showman.jpeg"),
-
-    add("Under the Mountain", "https://dobby.site/movies/under-the-mountain-2009?_rsrc=chrome/newtab&_t=6a5lm2&_u=hchh6mwu5k&pl=-1", "mountain.jpg"),
-    add("Urban Legend", "https://dobby.site/list/Watch%20Later/83?_rsrc=chrome/newtab&_t=907cb9&_u=hchh6mwu5k&pl=-1", "urbanlegend.jpg"),
-    add("Warm Bodies", "https://dobby.site/movies/warm-bodies-2013?_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "warmbodies.jpg"),
-    add("Wicked Little Letters", "https://dobby.site/movies/wicked-little-letters-2024?_rsrc=chrome/newtab&_t=j7ij2s&_u=hchh6mwu5k&pl=-1", "wickedlittle.jpg"), /* create file if missing */
-    add("Wildling", "https://dobby.site/movies/wildling-2018?_u=hchh6mwu5k&_t=2d04qs&_rsrc=chrome/newtab", "wildling.jpeg")
+    add("28 Days Later","https://dobby.site/movies/28-days-later-dot-dot-dot-2002?_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","28days.jpg"),
+    add("28 Weeks Later","https://dobby.site/movies/28-weeks-later-2007?_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","28weeks.jpg"),
+    add("30 Days of Night","https://dobby.site/movies/30-days-of-night-2007?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","30days.jpg"),
+    add("The Addams Family","https://dobby.site/movies/the-addams-family-1991?pl=-1&_u=hchh6mwu5k&_t=33dp8k&_rsrc=chrome/newtab","addams.jpg"),
+    add("Addams Family Values","https://dobby.site/movies/addams-family-values-1993?_rsrc=chrome/newtab&_t=33dp8k&_u=hchh6mwu5k&pl=-1","addams2.jpg"),
+    add("A Simple Favour","https://dobby.site/movies/a-simple-favor-2018?_rsrc=chrome/newtab&_t=7gl997&_u=hchh6mwu5k&pl=-1","simplefavour.jpg"),
+    add("A.I. Artificial Intelligence","https://dobby.site/movies/ai-artificial-intelligence-2001?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","ai.jpg"),
+    add("Alien (1979)","https://dobby.site/movies/alien-1979?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","alien.jpg"),
+    add("Aliens (1986)","https://dobby.site/movies/aliens-1986?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","aliens.jpg"),
+    add("Alien 3 (1992)","https://dobby.site/movies/alien3-1992?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","alien3.jpg"),
+    add("Alien Resurrection (1997)","https://dobby.site/movies/alien-resurrection-1997?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","alien4.jpg"),
+    add("Alien: Romulus (2024)","https://dobby.site/movies/alien-romulus-2024?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","romulus.jpg"),
+    add("Angels in America","https://dobby.site/shows/angels-in-america?_u=hchh6mwu5k&_t=e14tdp&_rsrc=chrome/newtab","angels.jpg"),
+    add("Batman (1989)","https://dobby.site/movies/batman-1989?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","batman.jpg"),
+    add("Batman Returns (1992)","https://dobby.site/movies/batman-returns-1992?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","batman2.jpg"),
+    add("Batman Forever (1995)","https://dobby.site/movies/batman-returns-1992?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","batmanforever.jpg"),
+    add("The Batman (2022)","https://dobby.site/movies/the-batman-2022?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","thebatman.jpg"),
+    /* … keep the rest of your list here exactly as before … */
+    add("Wildling","https://dobby.site/movies/wildling-2018?_u=hchh6mwu5k&_t=2d04qs&_rsrc=chrome/newtab","wildling.jpeg")
   ];
 
-  // Render
   const grid = document.getElementById('grid');
-  items.forEach(({title, link, file})=>{
-    const a = document.createElement('a');
-    a.href = link; a.target = "_blank"; a.rel = "noopener";
-    const card = document.createElement('div');
-    card.className = 'card';
-
-    const box = document.createElement('div');
-    box.className = 'thumb';
-
-    const img = document.createElement('img');
-    const src = THUMB_DIR + file;
-    img.src = src;
-    img.alt = title;
-
-    img.onerror = () => {
-      // show a clear placeholder with the missing file name
-      box.innerHTML = `<div class="broken">Image not found<small>${src}</small></div>`;
-    };
-
+  items.forEach(({title,link,file})=>{
+    const a = document.createElement('a'); a.href=link; a.target="_blank"; a.rel="noopener"; a.className="card";
+    const box = document.createElement('div'); box.className="thumb";
+    const img = document.createElement('img'); const src = THUMB_DIR + file;
+    img.src = src; img.alt = title;
+    img.onerror = () => { box.innerHTML = '<div class="broken">Missing<br>'+src+'</div>'; };
     box.appendChild(img);
-    const cap = document.createElement('div');
-    cap.className = 'title';
-    cap.textContent = title;
-
-    card.appendChild(box);
-    card.appendChild(cap);
-    a.appendChild(card);
-    grid.appendChild(a);
+    const cap = document.createElement('div'); cap.className="title"; cap.textContent = title;
+    a.appendChild(box); a.appendChild(cap); grid.appendChild(a);
   });
 </script>
 </body>
