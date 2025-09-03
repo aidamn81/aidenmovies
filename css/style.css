@@ -1,46 +1,65 @@
-/* Movies Grid */
-.grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
-  gap:1cm;
-  justify-content:center;
-  max-width:1200px;
-  margin:1cm auto;
-  padding:0;
+:root{
+  --neon:#391DD1;
+  --card-size: 3cm;
 }
 
-.card {
-  width:100%;
-  aspect-ratio:1/1;             /* keeps them square */
-  border-radius:14px;
-  background:#000;
-  overflow:hidden;
-  border:2px solid var(--neon-core);
+/* Base */
+html,body{height:100%;margin:0}
+body{
+  background:#000 url('../assets/castlebg.jpeg') no-repeat center top/cover;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  color:#fff;
+}
+
+/* Pages (top) */
+.pages{
   display:flex;
-  align-items:center;
+  gap:18px;
   justify-content:center;
-  transition:transform .3s;
+  padding:10px 12px 12px;
+  position:sticky;
+  top:0;
+  z-index:2;
+  backdrop-filter:saturate(1.1) blur(6px);
+  background:rgba(0,0,0,.35);
 }
-.card:hover { transform:scale(1.08); }
-.card img { width:100%; height:100%; object-fit:cover; display:block; }
+.pages a{
+  color:#fff;
+  text-decoration:none;
+  font-weight:600;
+  padding:8px 14px;
+  border-radius:10px;
+  border:2px solid var(--neon);
+  background:rgba(0,0,0,.5);
+  text-shadow:0 0 8px var(--neon), 0 0 12px var(--neon);
+  box-shadow:inset 0 0 10px var(--neon);
+  transition:transform .15s ease, background .2s ease;
+}
+.pages a:hover{ background:var(--neon); transform:translateY(-1px); }
 
-/* Categories Grid (adjust selector if yours is different) */
-.categories {
+/* Thumbnails grid */
+.grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(var(--card-size), 1fr));
   gap:1cm;
-  justify-content:center;
+  padding:1cm;
   max-width:1200px;
-  margin:1cm auto;
-  padding:0;
+  margin:0 auto;
 }
-
-.category {
-  background:rgba(0,0,0,0.6);
-  border:2px solid var(--neon-core);
-  border-radius:12px;
-  padding:1em;
-  text-align:center;
-  transition:transform .3s;
+.card{
+  width:100%;
+  aspect-ratio:1/1;
+  border-radius:14px;
+  overflow:hidden;
+  border:2px solid var(--neon);
+  background:#000;
+  box-shadow: inset 0 0 14px rgba(57,29,209,.55);
+  transition: transform .18s ease;
 }
-.category:hover { transform:scale(1.05); }
+.card:hover{ transform:scale(1.06); }
+.card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
