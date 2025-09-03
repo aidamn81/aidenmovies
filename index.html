@@ -1,54 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Aiden's Entertainment</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-  <div class="top">
-    <!-- Logo -->
-    <img class="logo" src="assets/logo.png" alt="Aiden's Entertainment">
+  <!-- PAGES (keep these at the top) -->
+  <nav class="pages">
+    <a href="index.html">Home</a>
+    <a href="tv.html">TV</a>
+    <a href="porn.html">Movies</a>
+  </nav>
 
-    <!-- Menu -->
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="tv.html">TV</a>
-      <a href="porn.html">Movies</a>
-      <a href="#">Categories</a>
-    </nav>
-  </div>
+  <!-- Thumbnails with Links start right under pages -->
+  <div class="grid" id="thumbGrid"></div>
 
-  <!-- Movies Grid -->
-  <div class="grid" id="moviesGrid">
-    <!-- Example thumbnails from assets/thumb -->
-    <a class="card" href="#">
-      <img src="assets/thumb/movie1.jpg" alt="Movie 1">
-    </a>
-    <a class="card" href="#">
-      <img src="assets/thumb/movie2.jpg" alt="Movie 2">
-    </a>
-    <a class="card" href="#">
-      <img src="assets/thumb/movie3.jpg" alt="Movie 3">
-    </a>
-    <a class="card" href="#">
-      <img src="assets/thumb/movie4.jpg" alt="Movie 4">
-    </a>
-    <!-- keep adding more here -->
-  </div>
+  <footer>© Aiden’s Entertainment</footer>
 
-  <!-- Add Movie Button -->
-  <div style="margin: 12px 0 60px;">
-    <button id="addMovieBtn">Add Movie</button>
-  </div>
-
-  <!-- Footer -->
-  <footer>
-    © Aiden’s Entertainment
-  </footer>
-
-  <!-- JS -->
   <script src="js/app.js"></script>
 </body>
 </html>
