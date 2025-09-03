@@ -12,7 +12,6 @@
     font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
     color:#fff;
   }
-  /* pages (top) */
   .pages{
     display:flex; gap:18px; justify-content:center;
     padding:10px 12px 12px; position:sticky; top:0; z-index:2;
@@ -26,7 +25,6 @@
     text-shadow:0 0 8px var(--neon), 0 0 12px var(--neon);
     box-shadow:inset 0 0 10px var(--neon);
   }
-  /* grid */
   .grid{
     display:grid; grid-template-columns:repeat(auto-fit,minmax(var(--card),1fr));
     gap:1cm; padding:1cm; max-width:1200px; margin:0 auto;
@@ -41,83 +39,164 @@
 </head>
 <body>
 
-<!-- PAGES -->
 <nav class="pages">
   <a href="index.html">Home</a>
   <a href="tv.html">TV</a>
   <a href="porn.html">Movies</a>
 </nav>
 
-<!-- THUMBNAILS -->
 <div class="grid" id="grid"></div>
 
 <script>
-  // tiny helper to create a local fallback path when a remote thumb fails
-  const slug = s => s.toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
-  const add = (title, link, thumb) => ({ title, link, thumb });
+  const add = (title, link, file, remote='') => ({title, link, file, remote});
 
+  // Using your exact local filenames from assets/thumb/
   const items = [
-    add("28 days later","https://dobby.site/movies/28-days-later-dot-dot-dot-2002?_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","https://edef10.pcloud.com/DLZ8ofLtEZO8STuB7ZWjPfZ7ZEPF3VkZNVZZnHXZZ7vkZW4ZL8Z7QZuM5Jl6HpFQ7GLL1oVDQIvSgbASH7/28days.jpg"),
-    add("28 weeks later","https://dobby.site/movies/28-weeks-later-2007?_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","https://edef9.pcloud.com/DLZ4d3hUEZf04gnB7ZWjPfZ7ZtxF3VkZNVZZnHXZZAgRZIHZmkZ50ZSB8SqHieakfjmrJBoUO9uHE2ODOy/28weeks.jpg"),
-    add("30 days of night","https://dobby.site/movies/30-days-of-night-2007?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","https://edef4.pcloud.com/DLZAl3hUEZ6V4gnB7ZWjPfZ7ZzwF3VkZNVZZnHXZZ1PgZRzZtJZDHZ9zNE2RdJhbYhPCaUePALeL5pLGUy/30days.jpg"),
-    add("Addams Family","https://dobby.site/movies/the-addams-family-1991?pl=-1&_u=hchh6mwu5k&_t=33dp8k&_rsrc=chrome/newtab","https://edef10.pcloud.com/DLZyq3hUEZup4gnB7ZWjPfZ7ZPoF3VkZNVZZnHXZZmlsZwHZK4Z25Z5Nh4IsQk7CuAdLw9R62bzjyIrHLk/addams.jpg"),
-    add("Addams Family Values","https://dobby.site/movies/addams-family-values-1993?_rsrc=chrome/newtab&_t=33dp8k&_u=hchh6mwu5k&pl=-1","https://edef7.pcloud.com/DLZGO3hUEZQh4gnB7ZWjPfZ7ZYyp3VkZNVZZnHXZZIPh7Z1RZPpZ1XZF94gu8JfLS7FtC17Bkie54GHYoKk/addams2.jpg"),
-    add("A Simple Favour","https://dobby.site/movies/a-simple-favor-2018?_rsrc=chrome/newtab&_t=7gl997&_u=hchh6mwu5k&pl=-1","https://edef5.pcloud.com/DLZol3hUEZiV4gnB7ZWjPfZ7ZF7p3VkZNVZZnHXZZG85Z1FZ9XZiLZiSaI2OvWbG0YnuSbturu0FSxG8Ey/simplefavour.jpg"),
-    add("Artificial Intelligence","https://dobby.site/movies/ai-artificial-intelligence-2001?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","https://edef6.pcloud.com/DLZ5t3hUEZlJ4gnB7ZWjPfZ7Zlyp3VkZNVZZnHXZZfq27Z55ZkkZNRZcdpXzu4TWdhJ9ijXGwsFERAvncSX/ai.jpg"),
-    add("Alien","https://dobby.site/movies/alien-1979?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","https://edef9.pcloud.com/DLZl63hUEZ444gnB7ZWjPfZ7Z97p3VkZNVZZnHXZZtgwZxHZuHZRpZNEpKfieYG9HYNKcj8Nm2cXbcdjwk/alien.jpg"),
-    add("Alien Romulus","https://dobby.site/movies/alien-romulus-2024?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","https://edef6.pcloud.com/DLZ0I3hUEZcS4gnB7ZWjPfZ7ZfXp3VkZNVZZnHXZZKDB7ZQFZCHZeHZ5sBYcqD7kt4kOO7k4uh8rk0d6BV7/romulus.jpg"),
-    add("Aliens","https://dobby.site/movies/aliens-1986?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","https://edef4.pcloud.com/DLZ9N3hUEZa24gnB7ZWjPfZ7Zkkp3VkZNVZZnHXZZhcFVZY0Zy5ZdFZyNwGKXOMRQ4aR3JkUXan0XzPisaX/aliens.jpg"),
-    add("Alien 3","https://dobby.site/movies/alien3-1992?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","https://edef3.pcloud.com/DLZjO3hUEZuQ4gnB7ZWjPfZ7ZN7p3VkZNVZZnHXZZ5vMZfzZDFZ8RZFhwPmQRVys4BlXAuViSBhRk8dtek/alien3.jpg"),
-    add("Alien 4","https://dobby.site/movies/alien-resurrection-1997?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","https://edef3.pcloud.com/DLZuE3hUEZiR4gnB7ZWjPfZ7ZGkp3VkZNVZZnHXZZHHFZMLZHLZ3XZkM0QMSdR2hzfYc2us8Ycr4Iz1N2V/alien4.jpg"),
-    add("Angels in America","https://dobby.site/shows/angels-in-america?_u=hchh6mwu5k&_t=e14tdp&_rsrc=chrome/newtab","https://edef1.pcloud.com/DLZcA3hUEZoB4gnB7ZWjPfZ7ZFVp3VkZNVZZnHXZZ8s67ZEJZhHZXHZmzVn3YCBUymIAVCbazbG7FKhIOOV/angels.jpg"),
-    add("Batman (1989)","https://dobby.site/movies/batman-1989?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","https://edef12.pcloud.com/DLZbI3hUEZRj4gnB7ZWjPfZ7Zq0p3VkZNVZZnHXZZQJYZzzZLzZpFZHt4MrrsB8gj5l8Y2z0DIe5MYTrFX/batman.jpg"),
-    add("Batman Returns","https://dobby.site/movies/batman-returns-1992?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","https://edef3.pcloud.com/DLZ6a3hUEZ6s4gnB7ZWjPfZ7ZR5p3VkZNVZZnHXZZoNk7ZgJZDHZn5Zz6jijvALWjmv6s7U4tw6yfSWq9rX/batman2.jpg"),
-    add("Batman Forever","https://dobby.site/movies/batman-returns-1992?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","https://edef4.pcloud.com/DLZlN3hUEZuW4gnB7ZWjPfZ7Zq5p3VkZNVZZnHXZZc4aZ6FZ45ZDLZFCx0vO2830unIOxIqI3Y4mwhx7xV/batmanforever.jpg"),
-    add("The Batman (2022)","https://dobby.site/movies/the-batman-2022?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","https://edef1.pcloud.com/DLZXN3hUEZGB4gnB7ZWjPfZ7ZRJp3VkZNVZZnHXZZTbzZeLZhJZr0ZasMfyfU0Iszwt8P86PICjhnXgETk/thebatman.jpg"),
-    add("Barb and Star","https://dobby.site/movies/barb-and-star-go-to-vista-del-mar-2021?_rsrc=chrome/newtab&_t=gcqrcb&_u=hchh6mwu5k&pl=-1","https://edef7.pcloud.com/DLZja3hUEZGs4gnB7ZWjPfZ7ZmVp3VkZNVZZnHXZZTy4ZkHZbFZJRZOUoK1gAYg3zuiga6E9HaPbcD8UoV/barb.jpg"),
-    add("Becky","https://dobby.site/movies/becky-2020?_rsrc=chrome/newtab&_t=h5aqtn&_u=hchh6mwu5k&pl=-1","https://edef3.pcloud.com/DLZK33hUEZ7e4gnB7ZWjPfZ7ZCJp3VkZNVZZnHXZZFMbZfJZCFZ3XZTCFH4OqTEe0mykQEBAPiqQC1OjNX/becky.jpg"),
-    add("The Wrath of Becky","https://dobby.site/movies/the-wrath-of-becky-2023?pl=-1&_u=hchh6mwu5k&_t=h5aqtn&_rsrc=chrome/newtab","https://edef11.pcloud.com/DLZQi3hUEZ4g4gnB7ZWjPfZ7ZrJp3VkZNVZZnHXZZKqMZapZo5ZqLZSkLMrWKXRfFAThY4OHFfpXEVobak/becky2.jpg"),
-    add("Black Swan","https://dobby.site/list/Watch%20Later/55?_rsrc=chrome/newtab&_t=2tq1n7&_u=hchh6mwu5k&pl=-1","https://edef1.pcloud.com/DLZ6c3hUEZBt4gnB7ZWjPfZ7ZjFp3VkZNVZZnHXZZcII5ZM0ZQJZ7JZoLjtGhliwmVVFKhcVYaKYbQztTAy/blackswan.jpg"),
-    add("Chocolat","https://dobby.site/movies/chocolat-2000?pl=-1&_u=hchh6mwu5k&_t=n8hvit&_rsrc=chrome/newtab","https://edef3.pcloud.com/DLZ0c3hUEZLK4gnB7ZWjPfZ7ZfHp3VkZNVZZnHXZZ4kxZzJZ5HZg7Z1BMtOtUPPjk5IwDPM24kyuy4o4pk/chocolat.jpg"),
-    add("Coyote Ugly","https://dobby.site/movies/coyote-ugly-2000?pl=-1&_u=hchh6mwu5k&_t=n8hvit&_rsrc=chrome/newtab","https://edef5.pcloud.com/DLZkr3hUEZkx4gnB7ZWjPfZ7ZJzp3VkZNVZZnHXZZj8FZMzZ2HZJXZlQ8mkl6u4tuP2qnDd47AURe59UhV/coyote.jpg"),
-    add("Clueless","https://dobby.site/movies/clueless-1995?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","https://edef5.pcloud.com/DLZaXGhUEZiN4gnB7ZWjPfZ7Znzp3VkZNVZZnHXZZJsm7Z4JZiHZJFZrURMR7Qo46FVAqw5lJd0WhGaj43k/clueless.jpg"),
-    add("Crawl","https://dobby.site/movies/crawl-2019?pl=-1&_u=hchh6mwu5k&_t=qgkarn&_rsrc=chrome/newtab","https://edef6.pcloud.com/DLZJo3hUEZYd4gnB7ZWjPfZ7ZNzp3VkZNVZZnHXZZcrKZXFZG5ZhRZlTyjpUrWdP5T9DDsOhfwxR5BjmnX/crawl.jpg"),
-    add("Cruel Intentions","https://dobby.site/list/Watch%20Later/26?_rsrc=chrome/newtab&_t=4ar4fj&_u=hchh6mwu5k&pl=-1","https://edef2.pcloud.com/DLZBo3hUEZPl4gnB7ZWjPfZ7ZHRp3VkZNVZZnHXZZH9BZXkZwXZSJZyHnEFyQyFEBQw0AKkEfamYaBeUu7/cruel.jpg"),
-    add("Dark City","https://dobby.site/list/Watch%20Later/27?_rsrc=chrome/newtab&_t=fse6bl&_u=hchh6mwu5k&pl=-1","https://edef2.pcloud.com/DLZfyGhUEZxt4gnB7ZWjPfZ7Z9Rp3VkZNVZZnHXZZh0X7ZLRZY5ZxFZ8g0tCHLLzRQRot4oouOorpqJwLCy/darkcity.jpg"),
-    add("Dawn of the Dead","https://dobby.site/movies/dawn-of-the-dead-2004?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","https://edef8.pcloud.com/DLZByGhUEZ8t4gnB7ZWjPfZ7ZARp3VkZNVZZnHXZZLuLZhHZ0pZ25Zid3vYYCHkNQ7SX3AGufzHLuSIXFX/dawn.jpg"),
-    add("Dennis the Menace","https://dobby.site/movies/dennis-the-menace-1993?_rsrc=chrome/newtab&_t=atjrk6&_u=hchh6mwu5k&pl=-1","https://edef8.pcloud.com/DLZd7GhUEZ4O4gnB7ZWjPfZ7ZvLp3VkZNVZZnHXZZqh9Z75Z7RZa5ZKTymcM1XrHFiqXluwnmmD8eENKYX/dennis.jpg"),
-    add("Dogma","https://dobby.site/movies/dogma-1999?_rsrc=chrome/newtab&_t=kba74h&_u=hchh6mwu5k&pl=-1","https://edef7.pcloud.com/DLZEkGhUEZDI4gnB7ZWjPfZ7Zm4p3VkZNVZZnHXZZHlQ7ZrVZRXZQzZ5OuzW333gxRFGuVK4k1iV7E0k6d7/dogma.jpg"),
-    add("Don't Breathe","https://dobby.site/movies/dont-breathe-2016?pl=-1&_u=hchh6mwu5k&_t=kba74h&_rsrc=chrome/newtab","https://edef3.pcloud.com/DLZBJGhUEZdo4gnB7ZWjPfZ7ZP4p3VkZNVZZnHXZZaKakZm5ZULZ3RZ4I1z6PWBtYzHPuoKBl1fqBnnACDV/dontbreathe.jpg"),
-    add("Don't Breathe 2","https://dobby.site/movies/dont-breathe-2-2021?pl=-1&_u=hchh6mwu5k&_t=3mg952&_rsrc=chrome/newtab","https://edef5.pcloud.com/DLZR5GhUEZkr4gnB7ZWjPfZ7Zo4p3VkZNVZZnHXZZMNHkZ2HZdRZ80ZoEQ01rk4OuJd1D8B6v1K7RfwodnX/dontbreathe2.jpg"),
-    add("Dracula (1992)","https://dobby.site/movies/dracula-1992?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","https://edef9.pcloud.com/DLZP5GhUEZRk8gnB7ZWjPfZ7ZY8p3VkZNVZZnHXZZSYT7ZJRZc5ZmkZQo5pb8Mpvib5wHEIwvHmDz93rSTV/dracula.jpg"),
-    add("Edward Scissorhands","https://dobby.site/movies/edward-scissorhands-1990?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","https://edef12.pcloud.com/DLZ9VGhUEZfN4gnB7ZWjPfZ7Zg8p3VkZNVZZnHXZZDX4ZnRZCLZu5Z4i8McucspaYn8C97rM4xjhqU12I7/edward.jpg"),
-    add("Elvis","https://dobby.site/movies/elvis-2022?_rsrc=chrome/newtab&_t=oo4prj&_u=hchh6mwu5k&pl=-1","https://edef12.pcloud.com/DLZ30GhUEZTy8gnB7ZWjPfZ7Zv8p3VkZNVZZnHXZZmWmZa5ZaHZSRZfH7krqydt2fxRBFmc7w0zjXmU9Qy/elvis.jpg"),
-    add("Fight Club","https://dobby.site/movies/fight-club-1999?pl=-1&_u=hchh6mwu5k&_t=n8hvit&_rsrc=chrome/newtab","https://edef4.pcloud.com/DLZe5GhUEZKr4gnB7ZWjPfZ7ZLQp3VkZNVZZnHXZZNbPZx0ZDVZapZVMVlnsuMfQBCFJ1d9FW1nzvaj85k/fight.jpg"),
-    add("Ghost","https://dobby.site/movies/ghost-1990?_rsrc=chrome/newtab&_t=aed2ap&_u=hchh6mwu5k&pl=-1","https://edef7.pcloud.com/DLZ65GhUEZNr4gnB7ZWjPfZ7ZmYp3VkZNVZZnHXZZauLZBJZGHZgkZxRCK9BptFfzm0wGvT2vJYFbLDDDX/ghost.jpg"),
-    add("Ginger Snaps","https://dobby.site/movies/ghost-1990?_rsrc=chrome/newtab&_t=aed2ap&_u=hchh6mwu5k&pl=-1","https://edef7.pcloud.com/DLZjzGhUEZXY8gnB7ZWjPfZ7ZdYp3VkZNVZZnHXZZwbAZXFZdHZHFZO2wuMRv3uaX4FUDGn8bMDkUqUWey/ginger.jpg"),
-    add("Ginger Snaps 2","https://www.effedupmovies.com/ginger-snaps-2-2004/","https://edef12.pcloud.com/DLZ2pGhUEZck8gnB7ZWjPfZ7ZJmp3VkZNVZZnHXZZN0OZBHZfLZX0Z3W4Ds4PlwMjyGGVzaEqThFbPpcJ7/ginger2.jpg"),
-    add("Ginger Snaps 3","https://www.lookmovie2.to/movies/view/ginger-snaps-back-the-beginning-2004","https://edef6.pcloud.com/DLZPLGhUEZHz8gnB7ZWjPfZ7Znmp3VkZNVZZnHXZZ9jt7ZcHZiLZQXZLTy04CUo1c0cz7v2Olyv0FYtqH6V/ginger3.jpg"),
-    add("Great Expectations","https://dobby.site/movies/great-expectations-1998?pl=-1&_u=hchh6mwu5k&_t=7jq6kp&_rsrc=chrome/newtab","https://edef9.pcloud.com/DLZGHGhUEZLR8gnB7ZWjPfZ7Z8bp3VkZNVZZnHXZZedF7Zy5ZLpZkJZrYtpVTHBeOhHYfYS8HxJwYUVg23y/expectations.jpg"),
-    add("Hail Satan?","https://dobby.site/list/Watch%20Later/37?_rsrc=chrome/newtab&_t=lhbiio&_u=hchh6mwu5k&pl=-1","https://edef12.pcloud.com/DLZ4zGhUEZxQ8gnB7ZWjPfZ7Zlbp3VkZNVZZnHXZZG0eZi5ZQFZfJZhNQrkKMrIWuuWjomN5ANpYn1x8NX/hail.jpg"),
-    add("Hedwig and the Angry Inch","https://dobby.site/movies/hedwig-and-the-angry-inch-2001?_rsrc=chrome/newtab&_t=7r6j4e&_u=hchh6mwu5k&pl=-1","https://edef2.pcloud.com/DLZCzGhUEZv48gnB7ZWjPfZ7Zkhp3VkZNVZZnHXZZwe4ZDHZy5Z3HZz2WuXTQ35gyjxbbNmnn6Qycnt7KV/hedwig.jpg"),
-    add("From Dusk Till Dawn","https://dobby.site/movies/from-dusk-till-dawn-1996?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","https://edef10.pcloud.com/DLZsRGhUEZHp8gnB7ZWjPfZ7Zuhp3VkZNVZZnHXZZbYGZ1RZXXZbJZnrgwjQRqbDVkupchPHX9yLqzMrGV/fromdusk.jpg"),
-    add("From Dusk Till Dawn 3","https://dobby.site/movies/from-dusk-till-dawn-3-the-hangmans-daughter-1999?pl=-1&_t=mr9gmc&_rsrc=chrome/newtab&_u=hchh6mwu5k","https://edef2.pcloud.com/DLZG4GhUEZnQ8gnB7ZWjPfZ7ZNSp3VkZNVZZnHXZZxLLZMLZy5ZcJZapYAGCUYtnhuWww1cns4VFbXB45X/fromdusk3.jpg"),
-    /* … continue with the rest of your list exactly the same pattern … */
+    add("28 days later","https://dobby.site/movies/28-days-later-dot-dot-dot-2002?_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","28days.jpg","https://edef10.pcloud.com/DLZ8ofLtEZO8STuB7ZWjPfZ7ZEPF3VkZNVZZnHXZZ7vkZW4ZL8Z7QZuM5Jl6HpFQ7GLL1oVDQIvSgbASH7/28days.jpg"),
+    add("28 weeks later","https://dobby.site/movies/28-weeks-later-2007?_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","28weeks.jpg","https://edef9.pcloud.com/DLZ4d3hUEZf04gnB7ZWjPfZ7ZtxF3VkZNVZZnHXZZAgRZIHZmkZ50ZSB8SqHieakfjmrJBoUO9uHE2ODOy/28weeks.jpg"),
+    add("30 days of night","https://dobby.site/movies/30-days-of-night-2007?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","30days.jpg","https://edef4.pcloud.com/DLZAl3hUEZ6V4gnB7ZWjPfZ7ZzwF3VkZNVZZnHXZZ1PgZRzZtJZDHZ9zNE2RdJhbYhPCaUePALeL5pLGUy/30days.jpg"),
+    add("Addams Family","https://dobby.site/movies/the-addams-family-1991?pl=-1&_u=hchh6mwu5k&_t=33dp8k&_rsrc=chrome/newtab","addams.jpg","https://edef10.pcloud.com/DLZyq3hUEZup4gnB7ZWjPfZ7ZPoF3VkZNVZZnHXZZmlsZwHZK4Z25Z5Nh4IsQk7CuAdLw9R62bzjyIrHLk/addams.jpg"),
+    add("Addams Family Values","https://dobby.site/movies/addams-family-values-1993?_rsrc=chrome/newtab&_t=33dp8k&_u=hchh6mwu5k&pl=-1","addams2.jpg","https://edef7.pcloud.com/DLZGO3hUEZQh4gnB7ZWjPfZ7ZYyp3VkZNVZZnHXZZIPh7Z1RZPpZ1XZF94gu8JfLS7FtC17Bkie54GHYoKk/addams2.jpg"),
+    add("A Simple Favour","https://dobby.site/movies/a-simple-favor-2018?_rsrc=chrome/newtab&_t=7gl997&_u=hchh6mwu5k&pl=-1","simplefavour.jpg","https://edef5.pcloud.com/DLZol3hUEZiV4gnB7ZWjPfZ7ZF7p3VkZNVZZnHXZZG85Z1FZ9XZiLZiSaI2OvWbG0YnuSbturu0FSxG8Ey/simplefavour.jpg"),
+
+    add("Artificial Intelligence","https://dobby.site/movies/ai-artificial-intelligence-2001?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","ai.jpg","https://edef6.pcloud.com/DLZ5t3hUEZlJ4gnB7ZWjPfZ7Zlyp3VkZNVZZnHXZZfq27Z55ZkkZNRZcdpXzu4TWdhJ9ijXGwsFERAvncSX/ai.jpg"),
+    add("Alien","https://dobby.site/movies/alien-1979?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","alien.jpg","https://edef9.pcloud.com/DLZl63hUEZ444gnB7ZWjPfZ7Z97p3VkZNVZZnHXZZtgwZxHZuHZRpZNEpKfieYG9HYNKcj8Nm2cXbcdjwk/alien.jpg"),
+    add("Alien Romulus","https://dobby.site/movies/alien-romulus-2024?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","romulus.jpg","https://edef6.pcloud.com/DLZ0I3hUEZcS4gnB7ZWjPfZ7ZfXp3VkZNVZZnHXZZKDB7ZQFZCHZeHZ5sBYcqD7kt4kOO7k4uh8rk0d6BV7/romulus.jpg"),
+    add("Aliens","https://dobby.site/movies/aliens-1986?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","aliens.jpg"),
+    add("Alien 3","https://dobby.site/movies/alien3-1992?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","alien3.jpg"),
+    add("Alien 4","https://dobby.site/movies/alien-resurrection-1997?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","alien4.jpg"),
+
+    add("Angels in America","https://dobby.site/shows/angels-in-america?_u=hchh6mwu5k&_t=e14tdp&_rsrc=chrome/newtab","angels.jpg"),
+    add("Batman (1989)","https://dobby.site/movies/batman-1989?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","batman.jpg"),
+    add("Batman Returns","https://dobby.site/movies/batman-returns-1992?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","batman2.jpg"),
+    add("Batman Forever","https://dobby.site/movies/batman-returns-1992?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","batmanforever.jpg"),
+    add("The Batman (2022)","https://dobby.site/movies/the-batman-2022?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","thebatman.jpg"),
+
+    add("Barb and Star","https://dobby.site/movies/barb-and-star-go-to-vista-del-mar-2021?_rsrc=chrome/newtab&_t=gcqrcb&_u=hchh6mwu5k&pl=-1","barb.jpg"),
+    add("Becky","https://dobby.site/movies/becky-2020?_rsrc=chrome/newtab&_t=h5aqtn&_u=hchh6mwu5k&pl=-1","becky.jpg"),
+    add("The Wrath of Becky","https://dobby.site/movies/the-wrath-of-becky-2023?pl=-1&_u=hchh6mwu5k&_t=h5aqtn&_rsrc=chrome/newtab","becky2.jpg"),
+
+    add("Black Swan","https://dobby.site/list/Watch%20Later/55?_rsrc=chrome/newtab&_t=2tq1n7&_u=hchh6mwu5k&pl=-1","blackswan.jpg"),
+    add("Chocolat","https://dobby.site/movies/chocolat-2000?pl=-1&_u=hchh6mwu5k&_t=n8hvit&_rsrc=chrome/newtab","chocolat.jpg"),
+    add("Coyote Ugly","https://dobby.site/movies/coyote-ugly-2000?pl=-1&_u=hchh6mwu5k&_t=n8hvit&_rsrc=chrome/newtab","coyote.jpg"),
+    add("Clueless","https://dobby.site/movies/clueless-1995?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","clueless.jpg"),
+    add("Crawl","https://dobby.site/movies/crawl-2019?pl=-1&_u=hchh6mwu5k&_t=qgkarn&_rsrc=chrome/newtab","crawl.jpg"),
+    add("Cruel Intentions","https://dobby.site/list/Watch%20Later/26?_rsrc=chrome/newtab&_t=4ar4fj&_u=hchh6mwu5k&pl=-1","cruel.jpg"),
+    add("Dark City","https://dobby.site/list/Watch%20Later/27?_rsrc=chrome/newtab&_t=fse6bl&_u=hchh6mwu5k&pl=-1","darkcity.jpg"),
+    add("Dawn of the Dead","https://dobby.site/movies/dawn-of-the-dead-2004?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","dawn.jpg"),
+    add("Dennis the Menace","https://dobby.site/movies/dennis-the-menace-1993?_rsrc=chrome/newtab&_t=atjrk6&_u=hchh6mwu5k&pl=-1","dennis.jpg"),
+    add("Dogma","https://dobby.site/movies/dogma-1999?_rsrc=chrome/newtab&_t=kba74h&_u=hchh6mwu5k&pl=-1","dogma.jpg"),
+    add("Don't Breathe","https://dobby.site/movies/dont-breathe-2016?pl=-1&_u=hchh6mwu5k&_t=kba74h&_rsrc=chrome/newtab","dontbreathe.jpg"),
+    add("Don't Breathe 2","https://dobby.site/movies/dont-breathe-2-2021?pl=-1&_u=hchh6mwu5k&_t=3mg952&_rsrc=chrome/newtab","dontbreathe2.jpg"),
+    add("Dracula (1992)","https://dobby.site/movies/dracula-1992?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","dracula.jpg"),
+
+    add("Edward Scissorhands","https://dobby.site/movies/edward-scissorhands-1990?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","edward.jpg"),
+    add("Elvis","https://dobby.site/movies/elvis-2022?_rsrc=chrome/newtab&_t=oo4prj&_u=hchh6mwu5k&pl=-1","elvis.jpg"),
+    add("Fight Club","https://dobby.site/movies/fight-club-1999?pl=-1&_u=hchh6mwu5k&_t=n8hvit&_rsrc=chrome/newtab","fight.jpg"),
+    add("Ghost","https://dobby.site/movies/ghost-1990?_rsrc=chrome/newtab&_t=aed2ap&_u=hchh6mwu5k&pl=-1","ghost.jpg"),
+
+    add("Ginger Snaps","https://dobby.site/movies/ghost-1990?_rsrc=chrome/newtab&_t=aed2ap&_u=hchh6mwu5k&pl=-1","ginger.jpg"),
+    add("Ginger Snaps 2","https://www.effedupmovies.com/ginger-snaps-2-2004/","ginger2.jpg"),
+    add("Ginger Snaps 3","https://www.lookmovie2.to/movies/view/ginger-snaps-back-the-beginning-2004","ginger3.jpg"),
+
+    add("Great Expectations","https://dobby.site/movies/great-expectations-1998?pl=-1&_u=hchh6mwu5k&_t=7jq6kp&_rsrc=chrome/newtab","expectations.jpg"),
+    add("Hail Satan?","https://dobby.site/list/Watch%20Later/37?_rsrc=chrome/newtab&_t=lhbiio&_u=hchh6mwu5k&pl=-1","hail.jpg"),
+    add("Hedwig and the Angry Inch","https://dobby.site/movies/hedwig-and-the-angry-inch-2001?_rsrc=chrome/newtab&_t=7r6j4e&_u=hchh6mwu5k&pl=-1","hedwig.jpg"),
+
+    add("From Dusk Till Dawn","https://dobby.site/movies/from-dusk-till-dawn-1996?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","fromdusk.jpg"),
+    add("From Dusk Till Dawn 3","https://dobby.site/movies/from-dusk-till-dawn-3-the-hangmans-daughter-1999?pl=-1&_t=mr9gmc&_rsrc=chrome/newtab&_u=hchh6mwu5k","fromdusk3.jpg"),
+
+    add("I Know What You Did Last Summer","https://dobby.site/movies/i-know-what-you-did-last-summer-1997?_rsrc=chrome/newtab&_t=badn4n&_u=hchh6mwu5k&pl=-1","iknow.jpg"),
+    add("I Still Know What You Did Last Summer","https://dobby.site/movies/i-still-know-what-you-did-last-summer-1998?pl=-1&_u=hchh6mwu5k&_t=472cu6&_rsrc=chrome/newtab","iknow2.jpg"),
+    add("Interview with the Vampire","https://dobby.site/movies/interview-with-the-vampire-1994?_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","interview.jpg"),
+
+    add("Jolt","https://dobby.site/movies/jolt-2021?_rsrc=chrome/newtab&_t=1oaoul&_u=hchh6mwu5k&pl=-1","jolt.jpg"),
+    add("Jurassic Park","https://dobby.site/movies/jurassic-park-1993?_rsrc=chrome/newtab&_t=rvhrmk&_u=hchh6mwu5k&pl=-1","jp.jpg"),
+    add("Let Me In","https://dobby.site/movies/let-me-in-2010?pl=-1&_u=hchh6mwu5k&_t=7jq6kp&_rsrc=chrome/newtab","letmein.jpg"),
+
+    add("Life After Beth","https://dobby.site/list/Watch%20Later/17?_rsrc=chrome/newtab&_t=d81d2t&_u=hchh6mwu5k&pl=-1","beth.jpg"),
+    add("Lisa Frankenstein","https://dobby.site/movies/lisa-frankenstein-2024?_rsrc=chrome/newtab&_t=cpdupp&_u=hchh6mwu5k&pl=-1","lisa.jpg"),
+    add("Mary Shelley's Frankenstein","https://dobby.site/list/Watch%20Later/77?pl=-1&_u=hchh6mwu5k&_t=cpdupp&_rsrc=chrome/newtab","frankeinstein.jpg"),
+
+    add("Moulin Rouge","https://dobby.site/movies/moulin-rouge-2001?pl=-1&_u=hchh6mwu5k&_t=oo4prj&_rsrc=chrome/newtab","moulin.jpg"),
+    add("Mrs Doubtfire","https://dobby.site/movies/mrs-doubtfire-1993?_rsrc=chrome/newtab&_t=8t6qkg&_u=hchh6mwu5k&pl=-1","doubtfire.jpg"),
+    add("Muse: Simulation Theory","https://dobby.site/list/Watch%20Later/3?_u=hchh6mwu5k&_t=31f1bb&_rsrc=chrome/newtab","muse.jpg"),
+    add("Natural Born Killers","https://dobby.site/movies/natural-born-killers-1994?_rsrc=chrome/newtab&_t=n6iepe&_u=hchh6mwu5k&pl=-1","naturalbornkillers.jpg"),
+
+    add("No One Will Save You","https://dobby.site/movies/no-one-will-save-you-2023?pl=-1&_u=hchh6mwu5k&_t=qgkarn&_rsrc=chrome/newtab","noone.jpg"),
+    add("Old People","https://dobby.site/movies/old-people-2022?_u=hchh6mwu5k&_t=qgkarn&_rsrc=chrome/newtab","oldpeople.jpg"),
+    add("Only Lovers Left Alive","https://dobby.site/movies/only-lovers-left-alive-2013?pl=-1&_u=hchh6mwu5k&_t=muet4h&_rsrc=chrome/newtab","lovers.jpg"),
+
+    add("The Open House","https://dobby.site/movies/the-open-house-2018?_u=hchh6mwu5k&_t=2d04qs&_rsrc=chrome/newtab","openhouse.jpg"),
+    add("Pan's Labyrinth (HU)","https://videa.hu/videok/film-animacio/a-faun-labirintusa-2006-fantasztikus-mexikoi-spanyol-amerikai-u5Gi4DbSGJeU1MmA","pans.jpg"),
+    add("Paris Is Burning","https://youtu.be/nI7EhpY2yaA?si=MayNBLHYYmjgSc90","paris.jpg"),
+    add("Passengers","https://dobby.site/movies/passengers-2016?_rsrc=chrome/newtab&_t=9gvj71&_u=hchh6mwu5k&pl=-1","passangers.jpg"),
+
+    add("Perfume","https://dobby.site/movies/perfume-the-story-of-a-murderer-2006?pl=-1&_u=hchh6mwu5k&_t=3mg952&_rsrc=chrome/newtab","perfume.jpg"),
+    add("Poor Things","https://dobby.site/movies/poor-things-2023?_rsrc=chrome/newtab&_t=r1f1a0&_u=hchh6mwu5k&pl=-1","poorthings.jpg"),
+    add("Practical Magic","https://dobby.site/movies/practical-magic-1998?_rsrc=chrome/newtab&_t=i0ndab&_u=hchh6mwu5k&pl=-1","practical.jpg"),
+    add("Pretty Woman","https://dobby.site/movies/pretty-woman-1990?_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","prettywoman.jpg"),
+    add("PS Burn This Letter","https://dobby.site/list/Watch%20Later/23?pl=-1&_u=hchh6mwu5k&_t=31f1bb&_rsrc=chrome/newtab","ps.jpg"),
+
+    add("Romeo + Juliet","https://dobby.site/movies/romeo-plus-juliet-1996?pl=-1&_u=hchh6mwu5k&_t=oo4prj&_rsrc=chrome/newtab","romeo.jpg"),
+    add("Romy and Michele","https://dobby.site/movies/romy-and-micheles-high-school-reunion-1997?_rsrc=chrome/newtab&_t=6elmfm&_u=hchh6mwu5k&pl=-1","romy.jpg"),
+    add("Queen of the Damned","https://dobby.site/movies/queen-of-the-damned-2002?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","qotd.jpg"),
+
+    add("Sin City","https://dobby.site/list/Watch%20Later/49?_rsrc=chrome/newtab&_t=60t0c8&_u=hchh6mwu5k&pl=-1","sin.jpg"),
+    add("Sin City: A Dame to Kill For","https://dobby.site/list/Watch%20Later/51?pl=-1&_u=hchh6mwu5k&_t=31f1bb&_rsrc=chrome/newtab","sin2.jpg"),
+
+    add("Sister Act","https://dobby.site/movies/sister-act-1992?pl=-1&_u=hchh6mwu5k&_t=763rjh&_rsrc=chrome/newtab","sister1.jpg"),
+    add("Sister Act 2","https://dobby.site/movies/sister-act-2-back-in-the-habit-1993?pl=-1&_u=hchh6mwu5k&_t=763rjh&_rsrc=chrome/newtab","sister2.jpeg"),
+
+    add("Sweeney Todd","https://dobby.site/movies/sweeney-todd-the-demon-barber-of-fleet-street-2007?_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","sweeney.jpg"),
+
+    add("The Best Exotic Marigold Hotel","https://dobby.site/movies/the-best-exotic-marigold-hotel-2011?pl=-1&_u=hchh6mwu5k&_t=763rjh&_rsrc=chrome/newtab","marigold.jpeg"),
+    add("The Second Best Exotic Marigold Hotel","https://dobby.site/movies/the-second-best-exotic-marigold-hotel-2015?pl=-1&_u=hchh6mwu5k&_t=763rjh&_rsrc=chrome/newtab","marigold2.jpg"),
+
+    add("The Cell","https://dobby.site/movies/the-cell-2000?pl=-1&_u=hchh6mwu5k&_t=2d04qs&_rsrc=chrome/newtab","cell.jpg"),
+    add("The Craft","https://dobby.site/movies/the-craft-1996?pl=-1&_u=hchh6mwu5k&_t=763rjh&_rsrc=chrome/newtab","craft.jpeg"),
+    add("The Craft: Legacy","https://dobby.site/movies/the-craft-legacy-2020?_u=hchh6mwu5k&_t=763rjh&_rsrc=chrome/newtab","craft.png"),
+
+    add("The Crow","https://dobby.site/movies/the-crow-1994?_u=hchh6mwu5k&_t=2d04qs&_rsrc=chrome/newtab","thecrow.jpg"),
+    add("The Crow: City of Angels","https://www.lookmovie2.to/movies/play/1689756707-the-crow-city-of-angels-1996","thecrow2.jpeg"),
+    add("The Crow: Salvation","https://www.lookmovie27.to/movies/view/0132910-the-crow-salvation-2000","thecrow3.jpg"),
+
+    add("The House Bunny","https://dobby.site/movies/the-house-bunny-2008?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","bunny.jpg"),
+    add("The Little Mermaid (1989)","https://dobby.site/movies/the-little-mermaid-1989?_rsrc=chrome/newtab&_t=ev4ijt&_u=hchh6mwu5k&pl=-1","mermaid.jpg"),
+    add("The Lost Boys","https://dobby.site/movies/the-lost-boys-1987?pl=-1&_u=hchh6mwu5k&_t=muet4h&_rsrc=chrome/newtab","lostboys.jpg"),
+
+    add("The Others","https://dobby.site/movies/the-others-2001?pl=-1&_u=hchh6mwu5k&_t=2d04qs&_rsrc=chrome/newtab","others.jpg"),
+    add("The Greatest Showman","https://dobby.site/movies/the-greatest-showman-2017?_rsrc=chrome/newtab&_t=hna2u0&_u=hchh6mwu5k&pl=-1","showman.jpeg"),
+
+    add("The Mask","https://dobby.site/movies/the-mask-1994?pl=-1&_u=hchh6mwu5k&_t=763rjh&_rsrc=chrome/newtab","mask.jpg"), /* create mask.jpg if you want this one to show */
+    add("There's Something About Mary","https://dobby.site/movies/theres-something-about-mary-1998?pl=-1&_u=hchh6mwu5k&_t=763rjh&_rsrc=chrome/newtab","mary.jpg"), /* create mary.jpg if needed */
+
+    add("The Phantom of the Opera (2004)","https://dobby.site/movies/the-phantom-of-the-opera-2004?_u=hchh6mwu5k&_t=ia79jt&_rsrc=chrome/newtab","phantom.jpg"),
+    add("The Watchers (2024)","https://dobby.site/movies/the-watchers-2024?pl=-1&_u=hchh6mwu5k&_t=qgkarn&_rsrc=chrome/newtab","watchers.jpg"), /* create watchers.jpg if needed */
+
+    add("Under the Mountain","https://dobby.site/movies/under-the-mountain-2009?_rsrc=chrome/newtab&_t=6a5lm2&_u=hchh6mwu5k&pl=-1","mountain.jpg"),
+    add("Urban Legend","https://dobby.site/list/Watch%20Later/83?_rsrc=chrome/newtab&_t=907cb9&_u=hchh6mwu5k&pl=-1","urbanlegend.jpg"),
+    add("Warm Bodies","https://dobby.site/movies/warm-bodies-2013?_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab","warmbodies.jpg"),
+    add("Wicked Little Letters","https://dobby.site/movies/wicked-little-letters-2024?_rsrc=chrome/newtab&_t=j7ij2s&_u=hchh6mwu5k&pl=-1","wickedlittle.jpg"), /* create wickedlittle.jpg if needed */
+    add("Wildling","https://dobby.site/movies/wildling-2018?_u=hchh6mwu5k&_t=2d04qs&_rsrc=chrome/newtab","wildling.jpeg")
   ];
 
   const grid = document.getElementById('grid');
-  items.forEach(({title,link,thumb})=>{
+  items.forEach(({title,link,file,remote})=>{
     const a = document.createElement('a');
     a.className = 'card';
-    a.href = link; a.target = "_blank"; a.rel = "noopener";
+    a.href = link; a.target = "_blank"; a.rel = "noopener"; a.title = title;
+
     const img = document.createElement('img');
-    const fb = `assets/thumb/${slug(title)}.jpg`;
-    img.src = thumb || fb;
+    const local = `assets/thumb/${file}`;
+    img.src = remote && remote.startsWith('http') ? remote : local;
     img.alt = title;
-    img.onerror = () => { if (img.src !== fb) img.src = fb; };
+    img.onerror = () => { if (img.src !== local) img.src = local; };
+
     a.appendChild(img);
     grid.appendChild(a);
   });
 </script>
+
 </body>
 </html>
