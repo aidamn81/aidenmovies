@@ -1,7 +1,6 @@
-/* === Global === */
-body {
-  margin: 0;
-  min-height: 100vh;
+/* === Page background (local + pCloud fallback) === */
+html {
+  min-height: 100%;
   background-color: #000;
   background-image:
     url('./assets/castlebg.jpeg'),
@@ -9,6 +8,11 @@ body {
   background-repeat: no-repeat;
   background-position: center top;
   background-size: cover;
+}
+
+body {
+  background: transparent;
+  margin: 0;
   font-family: sans-serif;
   color: #fff;
 }
@@ -42,7 +46,7 @@ nav a:hover {
   box-shadow: 0 0 10px #3A24D9, inset 0 0 12px #3A24D9;
 }
 
-/* === Logo === */
+/* === Logo (3×3 cm with pulsing drop-shadow glow) === */
 .logo-container {
   display: flex;
   justify-content: center;
@@ -52,16 +56,18 @@ nav a:hover {
 .logo {
   width: 3cm;
   height: 3cm;
-  display: block;
   object-fit: contain;
-  border-radius: 12px;
-  animation: pulseGlow 2s infinite;
+  display: block;
+  background: none;
+  box-shadow: none;
+  filter: drop-shadow(0 0 8px #3A24D9) drop-shadow(0 0 16px #3A24D9);
+  animation: logoGlow 2s ease-in-out infinite;
 }
 
-@keyframes pulseGlow {
-  0%   { box-shadow: 0 0 8px #3A24D9, 0 0 16px #3A24D9; }
-  50%  { box-shadow: 0 0 20px #3A24D9, 0 0 40px #3A24D9; }
-  100% { box-shadow: 0 0 8px #3A24D9, 0 0 16px #3A24D9; }
+@keyframes logoGlow {
+  0%   { filter: drop-shadow(0 0 6px #3A24D9) drop-shadow(0 0 12px #3A24D9); }
+  50%  { filter: drop-shadow(0 0 16px #3A24D9) drop-shadow(0 0 32px #3A24D9); }
+  100% { filter: drop-shadow(0 0 6px #3A24D9) drop-shadow(0 0 12px #3A24D9); }
 }
 
 /* === Movies Grid === */
