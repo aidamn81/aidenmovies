@@ -60,3 +60,29 @@ body{
   object-fit:cover;
   display:block;
 }
+
+/* ===== Logo with pulsing glow ===== */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.logo {
+  width: 3cm;
+  height: 3cm;
+  object-fit: contain;
+  animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 8px #3A24D9, 0 0 16px #3A24D9;
+  }
+  50% {
+    box-shadow: 0 0 20px #3A24D9, 0 0 40px #3A24D9;
+  }
+  100% {
+    box-shadow: 0 0 8px #3A24D9, 0 0 16px #3A24D9;
+  }
+}
