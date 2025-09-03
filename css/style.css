@@ -1,23 +1,21 @@
 :root{
   --neon-core:#391DD1;
-  --neon-mid:#391DD1;
-  --neon-outer:#391DD1;
   --card-w:3cm;
   --card-h:3cm;
 }
 
-/* Reset / base */
+/* Base */
 html,body{height:100%;margin:0}
 body{
-  /* IMPORTANT: path is relative to css/ folder */
-  background:url('../assets/castlebg.jpeg') no-repeat center top/cover;
+  /* Path is from css/ → ../assets/... ; ?v=3 busts GH Pages cache */
+  background:url('../assets/castlebg.jpeg?v=3') no-repeat center top / cover fixed;
   font-family:'Cinzel Decorative', serif;
   color:#fff;
   text-align:center;
   overflow-x:hidden;
 }
 
-/* Header / logo */
+/* Header */
 .top{
   display:flex;
   flex-direction:column;
@@ -31,9 +29,10 @@ body{
   max-width:92%;
   margin:0 auto;
   animation:pulseGlow 3s infinite alternate; /* glow only here */
+  will-change:filter;
 }
 
-/* Menu directly under logo; width matches logo for alignment */
+/* Menu directly under logo; aligned to logo width */
 nav{
   display:flex;
   justify-content:center;
@@ -47,25 +46,22 @@ nav a{
   text-decoration:none;
   padding:8px 14px;
   color:#fff;
-  border:2px solid #391DD1;
+  border:2px solid var(--neon-core);
   border-radius:8px;
   background:rgba(0,0,0,.6);
   transition:all .3s;
 }
-nav a:hover{
-  background:#391DD1;
-  color:#fff;
-}
+nav a:hover{ background:var(--neon-core); color:#fff; }
 
-/* Centered movie area (flex-wrap for reliable centering) */
+/* MOVIES — centered, responsive */
 .grid{
-  display:flex;               /* changed from grid -> flex for simple centering */
+  display:flex;                /* robust centering */
   flex-wrap:wrap;
-  gap:1cm;
-  justify-content:center;     /* centers items */
+  justify-content:center;
   align-items:flex-start;
-  width:min(1200px, 96%);     /* nice readable width */
-  margin:1cm auto;            /* centers the whole block */
+  gap:1cm;
+  width:min(1200px,96%);
+  margin:1cm auto;             /* centers the whole block */
   padding:0;
 }
 
@@ -75,31 +71,20 @@ nav a:hover{
   border-radius:14px;
   background:#000;
   overflow:hidden;
-  border:2px solid #391DD1;
+  border:2px solid var(--neon-core);
   display:flex;
   align-items:center;
   justify-content:center;
   transition:transform .3s;
 }
 .card:hover{ transform:scale(1.08); }
+.card img{ width:100%; height:100%; object-fit:cover; display:block; }
 
-/* Thumbnails (use your assets-thumb images) */
-.card img,
-.thumb{
-  display:block;
-  width:100%;
-  height:100%;
-  object-fit:cover;   /* fills the card nicely */
-}
+/* Footer */
+footer{ margin:2cm 0 1cm; font-size:14px; color:#fff; }
 
-footer{
-  margin:2cm 0 1cm;
-  font-size:14px;
-  color:#fff;
-}
-
-/* Glow only around logo via filter animation */
+/* Glow animation (logo only) */
 @keyframes pulseGlow{
-  from{filter:drop-shadow(0 0 6px #391DD1) drop-shadow(0 0 12px #391DD1);}
-  to{filter:drop-shadow(0 0 20px #391DD1) drop-shadow(0 0 40px #391DD1);}
+  from{ filter:drop-shadow(0 0 6px var(--neon-core)) drop-shadow(0 0 12px var(--neon-core)); }
+  to{   filter:drop-shadow(0 0 20px var(--neon-core)) drop-shadow(0 0 40px var(--neon-core)); }
 }
