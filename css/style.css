@@ -62,27 +62,35 @@ body{
 }
 
 /* ===== Logo with pulsing glow ===== */
+/* Logo with pulsing glow */
 .logo-container {
   display: flex;
   justify-content: center;
-  margin: 20px 0;
+  margin: 16px 0;
 }
 
 .logo {
   width: 3cm;
   height: 3cm;
+  display: block;
   object-fit: contain;
+  border-radius: 12px;
   animation: pulseGlow 2s infinite;
+  background: none; /* no black box */
 }
 
 @keyframes pulseGlow {
-  0% {
-    box-shadow: 0 0 8px #3A24D9, 0 0 16px #3A24D9;
-  }
-  50% {
-    box-shadow: 0 0 20px #3A24D9, 0 0 40px #3A24D9;
-  }
-  100% {
-    box-shadow: 0 0 8px #3A24D9, 0 0 16px #3A24D9;
-  }
+  0%   { box-shadow: 0 0 8px #3A24D9, 0 0 16px #3A24D9; }
+  50%  { box-shadow: 0 0 20px #3A24D9, 0 0 40px #3A24D9; }
+  100% { box-shadow: 0 0 8px #3A24D9, 0 0 16px #3A24D9; }
+}
+
+/* Background */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #000 url('./assets/castlebg.jpeg') no-repeat center top;
+  background-size: cover;
+  font-family: sans-serif;
+  color: #fff;
 }
