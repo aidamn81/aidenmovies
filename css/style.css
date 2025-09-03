@@ -1,68 +1,48 @@
-:root{
-  --neon:#391DD1;
-  --card-size: 3cm;
+/* === Global === */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #000;
+  background-image:
+    url('./assets/castlebg.jpeg'),
+    url('https://edef3.pcloud.com/DLZt042qEZnDxISB7ZWjPfZ7Zk1M3VkZNVZZpP0ZZPUd7ZS0ZTpZe0ZrrD9n7uO3fkszTVtLkHdLzird5VX/castlebg.jpeg');
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+  font-family: sans-serif;
+  color: #fff;
 }
 
-/* Base */
-html,body{height:100%;margin:0}
-body{
-  background:#000 url('../assets/castlebg.jpeg') no-repeat center top/cover;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-  color:#fff;
+/* === Menu (Pages) === */
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.4);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-/* Pages (top) */
-.pages{
-  display:flex;
-  gap:18px;
-  justify-content:center;
-  padding:10px 12px 12px;
-  position:sticky;
-  top:0;
-  z-index:2;
-  backdrop-filter:saturate(1.1) blur(6px);
-  background:rgba(0,0,0,.35);
-}
-.pages a{
-  color:#fff;
-  text-decoration:none;
-  font-weight:600;
-  padding:8px 14px;
-  border-radius:10px;
-  border:2px solid var(--neon);
-  background:rgba(0,0,0,.5);
-  text-shadow:0 0 8px var(--neon), 0 0 12px var(--neon);
-  box-shadow:inset 0 0 10px var(--neon);
-  transition:transform .15s ease, background .2s ease;
-}
-.pages a:hover{ background:var(--neon); transform:translateY(-1px); }
-
-/* Thumbnails grid */
-.grid{
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(var(--card-size), 1fr));
-  gap:1cm;
-  padding:1cm;
-  max-width:1200px;
-  margin:0 auto;
-}
-.card img {
-  width: 45px;
-  height: 67.5px;
-  object-fit: cover;
-  border-radius: 6px;
-  transition: transform 0.3s ease;
-}
-.card:hover{ transform:scale(1.06); }
-.card img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 2px solid #3A24D9;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 0 8px #3A24D9;
+  transition: transform 0.2s;
 }
 
-/* ===== Logo with pulsing glow ===== */
-/* Logo with pulsing glow */
+nav a:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #3A24D9, inset 0 0 12px #3A24D9;
+}
+
+/* === Logo === */
 .logo-container {
   display: flex;
   justify-content: center;
@@ -76,7 +56,6 @@ body{
   object-fit: contain;
   border-radius: 12px;
   animation: pulseGlow 2s infinite;
-  background: none; /* no black box */
 }
 
 @keyframes pulseGlow {
@@ -85,12 +64,58 @@ body{
   100% { box-shadow: 0 0 8px #3A24D9, 0 0 16px #3A24D9; }
 }
 
-/* Background */
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: #000 url('./assets/castlebg.jpeg') no-repeat center top;
-  background-size: cover;
-  font-family: sans-serif;
+/* === Movies Grid === */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 12px;
+  padding: 12px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
   color: #fff;
+}
+
+.thumb {
+  width: 90px;
+  height: 135px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #3A24D9;
+  background: #090909;
+  box-shadow: inset 0 0 12px rgba(58, 36, 217, 0.5);
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.title {
+  font-size: 0.85rem;
+  line-height: 1.1;
+  text-align: center;
+}
+
+/* === Missing Thumbnail Placeholder === */
+.broken {
+  display: grid;
+  place-items: center;
+  width: 90px;
+  height: 135px;
+  background: #2b0000;
+  border: 2px solid #ff3b3b;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 0.75rem;
+  padding: 6px;
 }
