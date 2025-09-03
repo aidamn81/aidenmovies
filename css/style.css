@@ -47,8 +47,8 @@ body{
   margin:0 auto;
 }
 .card img {
-  width: 90px;
-  height: 135px;
+  width: 45px;
+  height: 67.5px;
   object-fit: cover;
   border-radius: 6px;
   transition: transform 0.3s ease;
