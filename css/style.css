@@ -1,73 +1,17 @@
-:root{
-  --neon-core:#391DD1;
-  --card-w:3cm;
-  --card-h:3cm;
-}
-
-/* Base */
-html,body{height:100%;margin:0}
-body{
-  /* Path is from css/ → ../assets/... ; ?v=3 busts GH Pages cache */
-  background:url('../assets/castlebg.jpeg?v=3') no-repeat center top / cover fixed;
-  font-family:'Cinzel Decorative', serif;
-  color:#fff;
-  text-align:center;
-  overflow-x:hidden;
-}
-
-/* Header */
-.top{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:4px;
-  margin-top:4px;
-}
-.logo{
-  display:block;
-  width:420px;
-  max-width:92%;
-  margin:0 auto;
-  animation:pulseGlow 3s infinite alternate; /* glow only here */
-  will-change:filter;
-}
-
-/* Menu directly under logo; aligned to logo width */
-nav{
-  display:flex;
-  justify-content:center;
-  gap:22px;
-  margin:0 0 22px;
-  width:420px;
-  max-width:92%;
-}
-nav a{
-  font-size:22px;
-  text-decoration:none;
-  padding:8px 14px;
-  color:#fff;
-  border:2px solid var(--neon-core);
-  border-radius:8px;
-  background:rgba(0,0,0,.6);
-  transition:all .3s;
-}
-nav a:hover{ background:var(--neon-core); color:#fff; }
-
-/* MOVIES — centered, responsive */
-.grid{
-  display:flex;                /* robust centering */
-  flex-wrap:wrap;
-  justify-content:center;
-  align-items:flex-start;
+/* Movies Grid */
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
   gap:1cm;
-  width:min(1200px,96%);
-  margin:1cm auto;             /* centers the whole block */
+  justify-content:center;
+  max-width:1200px;
+  margin:1cm auto;
   padding:0;
 }
 
-.card{
-  width:var(--card-w);
-  height:var(--card-h);
+.card {
+  width:100%;
+  aspect-ratio:1/1;             /* keeps them square */
   border-radius:14px;
   background:#000;
   overflow:hidden;
@@ -77,14 +21,26 @@ nav a:hover{ background:var(--neon-core); color:#fff; }
   justify-content:center;
   transition:transform .3s;
 }
-.card:hover{ transform:scale(1.08); }
-.card img{ width:100%; height:100%; object-fit:cover; display:block; }
+.card:hover { transform:scale(1.08); }
+.card img { width:100%; height:100%; object-fit:cover; display:block; }
 
-/* Footer */
-footer{ margin:2cm 0 1cm; font-size:14px; color:#fff; }
-
-/* Glow animation (logo only) */
-@keyframes pulseGlow{
-  from{ filter:drop-shadow(0 0 6px var(--neon-core)) drop-shadow(0 0 12px var(--neon-core)); }
-  to{   filter:drop-shadow(0 0 20px var(--neon-core)) drop-shadow(0 0 40px var(--neon-core)); }
+/* Categories Grid (adjust selector if yours is different) */
+.categories {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+  gap:1cm;
+  justify-content:center;
+  max-width:1200px;
+  margin:1cm auto;
+  padding:0;
 }
+
+.category {
+  background:rgba(0,0,0,0.6);
+  border:2px solid var(--neon-core);
+  border-radius:12px;
+  padding:1em;
+  text-align:center;
+  transition:transform .3s;
+}
+.category:hover { transform:scale(1.05); }
