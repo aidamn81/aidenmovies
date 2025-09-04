@@ -1,20 +1,17 @@
 /* === Page background (local + pCloud fallback) === */
-html {
-  min-height: 100%;
-  background-color: #000;
-  background-image:
-    url('./assets/castlebg.jpeg'),
-    url('https://edef3.pcloud.com/DLZt042qEZnDxISB7ZWjPfZ7Zk1M3VkZNVZZpP0ZZPUd7ZS0ZTpZe0ZrrD9n7uO3fkszTVtLkHdLzird5VX/castlebg.jpeg');
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: cover;
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background: transparent;
-  margin: 0;
-  font-family: sans-serif;
-  color: #fff;
+  background-color: #000; /* fallback */
+  background-image: url("./assets/castlebg.jpeg?v=3"),
+    url("https://edef3.pcloud.com/DLZt042qEZnDxISB7ZWjPfZ7Zk1M3VkZNVZZpP0ZZPUd7ZS0ZTpZe0ZrrD9n7uO3fkszTVtLkHdLzird5VX/castlebg.jpeg");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
 }
 
 /* === Menu (Pages) === */
