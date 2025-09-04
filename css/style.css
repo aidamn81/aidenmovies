@@ -124,3 +124,22 @@ nav a:hover {
   font-size: 0.75rem;
   padding: 6px;
 }
+
+/* Solid fallback if images fail */
+html, body { height: 100%; }
+body { background: transparent; }
+
+/* Fixed full-screen background layer (local + pCloud fallback) */
+body::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;              /* sits behind all content */
+  background-color: #000;   /* base */
+  background-image:
+    url("./assets/castlebg.jpeg?v=2"), /* local first */
+    url("https://edef3.pcloud.com/DLZt042qEZnDxISB7ZWjPfZ7Zk1M3VkZNVZZpP0ZZPUd7ZS0ZTpZe0ZrrD9n7uO3fkszTVtLkHdLzird5VX/castlebg.jpeg"); /* remote fallback */
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+}
