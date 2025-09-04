@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     m("Angels in America", "https://dobby.site/shows/angels-in-america?_u=hchh6mwu5k&_t=e14tdp&_rsrc=chrome/newtab", "angels.jpg", "https://edef1.pcloud.com/DLZcA3hUEZoB4gnB7ZWjPfZ7ZFVp3VkZNVZZnHXZZ8s67ZEJZhHZXHZmzVn3YCBUymIAVCbazbG7FKhIOOV/angels.jpg"),
 
-    m("Batman (1989)", "https://dobby.site/movies/batman-1989?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "batman.jpg", "https://edef12.pcloud.com/DLZbI3hUEZRj4gnB7ZWjPfZ7Zq0p3VkZNVZZnHXZZQJYZzzZLzZpFZHt4MrrsB8gj5l8Y2z0DIe5MYTrFX/batman.jpg"),
+    m("Batman (1989)", "https://dobby.site/movies/batman-1989?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "batman.jpeg", "https://edef12.pcloud.com/DLZbI3hUEZRj4gnB7ZWjPfZ7Zq0p3VkZNVZZnHXZZQJYZzzZLzZpFZHt4MrrsB8gj5l8Y2z0DIe5MYTrFX/batman.jpeg"),
     m("Batman Returns (1992)", "https://dobby.site/movies/batman-returns-1992?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "batman2.jpg", "https://edef3.pcloud.com/DLZ6a3hUEZ6s4gnB7ZWjPfZ7ZR5p3VkZNVZZnHXZZoNk7ZgJZDHZn5Zz6jijvALWjmv6s7U4tw6yfSWq9rX/batman2.jpg"),
     m("Batman Forever (1995)", "https://dobby.site/movies/batman-returns-1992?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "batmanforever.jpg", "https://edef4.pcloud.com/DLZlN3hUEZuW4gnB7ZWjPfZ7Zq5p3VkZNVZZnHXZZc4aZ6FZ45ZDLZFCx0vO2830unIOxIqI3Y4mwhx7xV/batmanforever.jpg"),
     m("The Batman (2022)", "https://dobby.site/movies/the-batman-2022?pl=-1&_u=hchh6mwu5k&_t=bq0t40&_rsrc=chrome/newtab", "thebatman.jpg", "https://edef1.pcloud.com/DLZXN3hUEZGB4gnB7ZWjPfZ7ZRJp3VkZNVZZnHXZZTbzZeLZhJZr0ZasMfyfU0Iszwt8P86PICjhnXgETk/thebatman.jpg"),
